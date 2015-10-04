@@ -1,0 +1,141 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+.main-sections {
+    border: 1px solid silver;
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 5px 5px 5px grey;
+    min-height: 200px;
+}
+
+
+
+.quizzes-list {
+    list-style: none;
+    padding-left: 0px;
+}
+
+
+.quizzes-list li {
+    padding: 10px;
+}
+
+
+.quizzes-list li:nth-child(2n+1) {
+    background: #F0F0F0;
+}
+
+.quizzes-list li:hover {
+    cursor: pointer;
+    background: #D0D0D0;
+}
+
+.h-space {
+    height: 20px;
+}
+
+
+/*#region Question-classes */
+
+
+.quiz {
+    padding: 15px;
+    margin: 5px 0px;
+    border: 1px solid transparent;
+}
+
+.not-attempted, .quiz2:hover{
+    padding-left: 6px;
+    border: 1px solid silver;
+    border-left-width: 10px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px #eee;
+}
+
+
+.quiz .q-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.quiz ul li {
+    display: table-row;
+    cursor: pointer;
+}
+
+.quiz ul li:hover {
+    background-color: grey;
+}
+
+.options {
+    padding-left: 20px;
+    list-style: none;
+}
+
+.checked {
+    font-weight: bold;
+}
+
+/*#endregion Question-classes*/
+
+
+/*#region Solved-Questions*/
+
+.actualanswer{
+    background: #5cb85c;
+}
+
+.answer {
+    border: 1px solid #eee;
+    border-left-width: 10px;
+    border-radius: 3px;
+    padding-bottom: 0px;
+}
+
+
+.right-answer {
+    border-color: #5cb85c;
+}
+
+.wrong-answer{
+    border-color: #d9534f;
+}
+
+
+
+/*#endregion Solved-Questions*/
+
+
+/*#region Clock*/
+
+.clock {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: black;
+    color: white;
+    font-size: 30px;
+    padding:0px 10px;
+    font-family: Tahoma;
+    box-shadow: 0px 0px 18px grey;
+    border-radius: 5px;
+
+
+}
+.time {
+    font-size: 70px;
+}
+.message {
+    width: 100px;
+    word-wrap: break-word;
+    padding-left: 10px;
+    padding-top: 10px;
+    line-height: 30px;
+}
+
+/*#endregion Clock*/

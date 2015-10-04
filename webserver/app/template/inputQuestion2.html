@@ -1,0 +1,29 @@
+﻿<div class="form-group" ng-class="{ 'has-error' : quizForm.QT.$invalid && !quizForm.QT.$pristine }">
+    <label for="questionTitle" class="col-sm-2 control-label">Question</label>
+    <div class="col-sm-8">
+        <textarea class="form-control" id="questionTitle"
+                  ng-model="question.title"
+                  name="QT" ></textarea>
+        <p ng-show="quizForm.QT.$invalid && !quizForm.QT.$pristine" class="help-block">Qustion title is required.</p>
+    </div>
+</div>
+
+<div class="form-group" ng-repeat="o in question.options">
+    <label class="col-sm-2 control-label">Option {{o.id}}:</label>
+    <div class="col-sm-8">
+        <input type="text" class="form-control" ng-model="o.value">
+        <div class='radio'>
+            <label>
+                <input type='radio' name="question{{question.number}}" value="{{o.id}}" ng-model="question.answer"> Select if this is right answer.
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="form-group" ng-show="solved">
+    <label for="inputPassword3" class="col-sm-2 control-label">Answer explanation</label>
+    <div class="col-sm-8">
+        <textarea class="form-control" ng-model="question.answerDesc"></textarea>
+    </div>
+</div>
+

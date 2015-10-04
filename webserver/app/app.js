@@ -1,13 +1,23 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
+angular.module('tys', [
   'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version',
-  'myApp.details'
+  'tys.home',
+  'tys.quizlist',
+  'tys.test',
+  'tys.version',
+  'tys.upload'
 ]).
-config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+  config(['$routeProvider', function($routeProvider) {
+    $routeProvider.otherwise({redirectTo: '/home'});
+  }])
+    .filter('startFrom', function () {
+      return function (input, start) {
+
+        if(input) {
+          start = +start; //parse to int
+          return input.slice(start);
+        }
+      };
+    });
