@@ -1,0 +1,10 @@
+<h1>Popular products</h1>
+
+<table class="table table-hover">
+    <tr ng-repeat="d in products">
+        <td>{{d._id}}</td>
+        <td >
+            <a href="/#/details">{{d.name}} - {{d.details}}</a>
+        </td>
+    </tr>
+</table>

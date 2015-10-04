@@ -1,2 +1,2 @@
-# Test Your Skills Code Base
-This is Test your skills project.
+# simple-mean
+This is a starter project with MEAN stack. 
