@@ -57,12 +57,12 @@
                             <p ng-show="quizForm.time.$error.max" class="help-block">Time should not be greater than 180 Minuites !</p>
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{ 'has-error' : quizForm.positiveMark.$invalid && !quizForm.positiveMark.$pristine }">
+                    <div class="form-group" ng-class="{ 'has-error' : quizForm.award.$invalid && !quizForm.positiveMark.$pristine }">
                         <label for="positiveMark" class="col-sm-2 control-label">+Ve Marking</label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" id="positiveMark"
-                                   name="positiveMark" min="1" max="100"
-                                   ng-model="quiz.positiveMark"
+                                   name="award" min="1" max="100"
+                                   ng-model="quiz.award"
                                    placeholder="Marks given for each correct answer." required>
                             <p ng-show="quizForm.positiveMark.$error.required && !quizForm.positiveMark.$pristine" class="help-block">This is required.</p>
                             <p ng-show="quizForm.positiveMark.$error.number" class="help-block">Not a valid number!</p>
@@ -70,12 +70,12 @@
                             <p ng-show="quizForm.positiveMark.$error.max" class="help-block">Number should not be greater than 100 !</p>
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{ 'has-error' : quizForm.negativeMark.$invalid && !quizForm.negativeMark.$pristine }">
+                    <div class="form-group" ng-class="{ 'has-error' : quizForm.penalty.$invalid && !quizForm.negativeMark.$pristine }">
                         <label for="negativeMark" class="col-sm-2 control-label">-Ve Marking</label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" id="negativeMark"
-                                   name="negativeMark" min="-100" max="0"
-                                   ng-model="quiz.negativeMark"
+                                   name="penalty" min="-100" max="0"
+                                   ng-model="quiz.penalty"
                                    placeholder="Marks given for each wrong answer." required>
                             <p ng-show="quizForm.negativeMark.$error.required && !quizForm.negativeMark.$pristine" class="help-block">This is required.</p>
                             <p ng-show="quizForm.negativeMark.$error.number" class="help-block">Not a valid number!</p>

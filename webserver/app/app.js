@@ -7,10 +7,11 @@ angular.module('tys', [
   'tys.quizlist',
   'tys.test',
   'tys.version',
-  'tys.upload'
+  'tys.upload',
+  'ui.bootstrap'
 ]).
   config(['$routeProvider', function($routeProvider) {
-    $routeProvider.otherwise({redirectTo: '/home'});
+   // $routeProvider.otherwise({redirectTo: '/home'});
   }])
     .filter('startFrom', function () {
       return function (input, start) {
