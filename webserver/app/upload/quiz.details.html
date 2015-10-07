@@ -1,3 +1,59 @@
-<h1>This is quiz details</h1>
+<div class="h-space"></div>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <img src="../img/test.png" style="padding-right: 20px;"/><h3 style="display: inline-block; ">{{quiz.title}}</h3>
+            <div class="row">
+                <div class="col-lg-10">
+                    <span>Total Questions: {{quiz.questions.length}}</span>
+                </div>
+                <div class="col-lg-2" >
+                    <span >Max Time: {{quiz.time}} Mins.</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="quiz-instructions alert alert-success">
+                <h3>Instructions:</h3>
+                <ol>
+                    <li>This quiz consists of <b>{{quiz.questions.length}}</b> Questions.</li>
+                    <li>For every CORRECT answer, you will be awarded <b>{{quiz.award}}</b> Marks.</li>
+                    <li ng-show="quiz.penalty !== 0">For every WRONG answer, <b>{{quiz.penalty}}</b> will be reduced.</li>
+                    <li ng-show="quiz.penalty === 0">There is no negative marking for wrong answers.</li>
+                    <li ng-repeat="i in quiz.instructions">
+                        {{i}}
+                    </li>
+                    <li>ALL THE BEST!!!</li>
+                </ol>
+            </div>
+            <div >
+                <div class="quiz"
+                     ng-repeat="question in quiz.questions | startFrom:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage">
+                    <div>
+                        <span class="q-title ">Q{{question.id}}: {{question.title}}</span>
+                        <ul class="options">
+                            <li ng-disabled="preview"
+                                ng-repeat="option in question.options"
+                                ng-class="{actualanswer: question.answer == option.id}">
 
-{{id}} : {{controller}}
+                                <label style="font-weight: normal">
+                                    <input type="radio" ng-disabled="preview"
+                                           name="{{question.id}}" value="{{option.key}}"
+                                           ng-model="question.givenAnswer">{{option.value}}
+                                </label>
+                                <span ng-show="question.answer == option.id" class="glyphicon glyphicon-check"></span>
+                            </li>
+
+                        </ul>
+                        <p ng-show="quiz.isSolved" style="padding: 5px;">[<b>Explanation:</b> {{question.explanation}}]</p>
+
+                    </div>
+                </div>
+            </div>
+            <p>{{quiz.notes}}</p>
+        </div>
+        <div style="text-align: center" ng-show="showQuestionPaper">
+            <pagination items-per-page="itemsPerPage" total-items="quiz.questions.length" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+        </div>
+    </div>
+</div>

@@ -10,8 +10,14 @@ angular.module('tys.home', ['ngRoute'])
         });
     }])
 
-    .controller('HomeController', ['$scope', function($scope){
+    .controller('HomeController', ['$scope', '$http', function($scope, $http){
 
         $scope.message = "I am home controller";
+
+        $scope.subjects = [];
+        $http.get('/api/subjects')
+            .then(function (res) {
+               $scope.subjects = res.data;
+            });
 
     }]);

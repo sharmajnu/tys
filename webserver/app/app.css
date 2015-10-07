@@ -42,3 +42,7 @@
   text-align: center;
   background: #f7fafb;
 }
+
+.quiz-instructions li{
+  font-size: 18px;
+}

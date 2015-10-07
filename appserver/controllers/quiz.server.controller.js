@@ -1,40 +1,72 @@
-
 var Quiz = require('../models/quiz.server.model.js');
+var SubjectController = require('./subject.server.controller.js');
+
 
 var get = function (req, res) {
-    var result = {};
-    Quiz.find().exec(function (err, results) {
-        result = results;
-        res.status(200).json(result);
-        console.log(results);
+    Quiz.find({subject: "561199dfd34405c401f781c1"},{title: 1, subject: 1}).exec(function (err, quizzes) {
+        SubjectController.getSubjects(function (err, subjects) {
+            if(err){
+                res.status(404).json({message: 'something went wrong' + err})
+            } else {
+                var returnedData = [];
+                for(var i=0; i < quizzes.length; i++){
+                    returnedData.push(quizzes[i].toObject())
+                    for(var j=0; j< subjects.length; j++){
+                        if(quizzes[i].subject.equals(subjects[j]._id)){
+                            returnedData[i].subject = subjects[j].name;
+                            break;
+                        }
+                    }
+                }
+            res.status(200).json(returnedData);
+            console.log(quizzes);
+            }
+        });
+
     });
 };
+
+var getQuiz = function (req, res) {
+    var id = req.params.id;
+    console.log('GetQuiz finding by id ' + id);
+    Quiz.findById(req.params.id, function (err, quiz) {
+        if(err){
+            res.status(404).json({message: 'Quiz does not exists'});
+        } else {
+            res.status(200).json(quiz);
+        }
+    });
+}
 
 var post = function (req, res) {
 
     console.log('starting processing post request...');
 
-    var entry = new Quiz({
-        title: req.body.title,
-        subject: req.body.subject,
-        totalQuestions: req.body.totalQuestions,
-        time: req.body.time,
-        award: req.body.award,
-        penalty: req.body.penalty,
-        isSolved: req.body.isSolved,
-        notes: req.body.notes,
-        questions: req.body.questions
+    SubjectController.createSubject(req.body.subject, function (subjectId) {
+
+        var entry = new Quiz({
+            totalQuestions: req.body.totalQuestions,
+            time: req.body.time,
+            title: req.body.title,
+            subject: subjectId,
+            award: req.body.award,
+            penalty: req.body.penalty,
+            isSolved: req.body.isSolved,
+            notes: req.body.notes,
+            questions: req.body.questions
+        });
+
+        entry.save();
+        console.log(entry);
+
+        res.status(201).json(entry._id);
     });
-
-    entry.save();
-    console.log(entry);
-
-    res.status(201).json(entry._id);
 };
 
 var quizController = {
     get: get,
-    post: post
+    post: post,
+    getQuiz: getQuiz
 };
 
 module.exports = quizController;

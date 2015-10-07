@@ -16,7 +16,7 @@ var QuestionSchema = new Schema({
 
 var QuizSchema = new Schema({
     title: String,
-    subject: String,
+    subject: mongoose.Schema.Types.ObjectId,
     totalQuestions: Number,
     time: Number,
     award: Number,

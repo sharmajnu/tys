@@ -32,7 +32,7 @@
                         <label class="col-sm-2 control-label">Total questions</label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control"
-                                   name="numberOfQuestions"
+                                   name="quiz.numberOfQuestions"
                                    placeholder="Total number of questions"
                                    ng-model="totalQuestions"
                                    ng-change="updateQuestionCount();"
@@ -84,13 +84,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-2 control-label">Is Solved</label>
+                        <label for="isSolved" class="col-sm-2 control-label">Is Solved</label>
                         <div class="col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="quiz.solved" value="true"> Select if you are providing a solution too.
+                                    <input id="isSolved" type="checkbox" ng-model="quiz.isSolved" value="true"> Select if you are providing a solution too.
                                 </label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes" class="col-sm-2 control-label">Instructions</label>
+                        <div class="col-sm-8">
+                            <textarea id="notes" type="text"
+                                   ng-model="quiz.notes" rows="10"
+                                   class="form-control"/>
                         </div>
                     </div>
                 </fieldset>
@@ -100,9 +108,9 @@
                         <div ng-repeat="q in quiz.questions">
                             <accordion-group is-open="q.open">
                                 <accordion-heading>
-                                    Ques {{q.number}}:{{q.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': q.open, 'glyphicon-chevron-right': !q.open}"></i>
+                                    Ques {{q.id}}:{{q.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': q.open, 'glyphicon-chevron-right': !q.open}"></i>
                                 </accordion-heading>
-                                <input-question solved="quiz.solved" question="q"></input-question>
+                                <input-question solved="quiz.isSolved" question="q"></input-question>
                             </accordion-group>
                         </div>
 

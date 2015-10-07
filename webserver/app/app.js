@@ -11,7 +11,7 @@ angular.module('tys', [
   'ui.bootstrap'
 ]).
   config(['$routeProvider', function($routeProvider) {
-   // $routeProvider.otherwise({redirectTo: '/home'});
+   $routeProvider.otherwise({redirectTo: '/home'});
   }])
     .filter('startFrom', function () {
       return function (input, start) {
