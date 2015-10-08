@@ -1,0 +1,14 @@
+<div class="quiz-instructions alert alert-success">
+    <h3>Instructions:</h3>
+    <ol>
+        <li>This quiz consists of <b>{{quiz.totalQuestions}}</b> Questions.</li>
+        <li>You are given total <b>{{quiz.time}} Minuites</b> to solve all questions.</li>
+        <li>For every CORRECT answer, you will be awarded <b>{{quiz.award}}</b> Marks.</li>
+        <li ng-show="quiz.penalty !== 0">For every WRONG answer, <b>{{-1 * quiz.penalty}}</b> Mark/Marks will be reduced.</li>
+        <li ng-show="quiz.penalty === 0">There is no negative marking for wrong answers.</li>
+        <li ng-repeat="i in quiz.instructions">
+            {{i}}
+        </li>
+        <li>ALL THE BEST!!!</li>
+    </ol>
+</div>

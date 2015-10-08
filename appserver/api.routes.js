@@ -13,9 +13,10 @@ router.post('/products', productController.post);
 
 router.get('/quizzes', quizController.get);
 router.get('/quizzes/:id', quizController.getQuiz);
-
 router.post('/quizzes', quizController.post);
+router.put('/quizzes/:id', quizController.put);
 
 router.get('/subjects', subjectController.get);
+router.post('/subjects', subjectController.post);
 
 module.exports = router;

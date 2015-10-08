@@ -5,13 +5,13 @@
 
 angular.module('tys.upload', ['ngRoute'])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/upload', {
             templateUrl: 'upload/upload.html',
             controller: 'UploadController'
         });
     }])
-    .controller('UploadController', ['$scope', '$http', '$location' ,function ($scope, $http, $location) {
+    .controller('UploadController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
 
         $scope.numberOfOptionsInEachQuestion = 4;
 
@@ -25,22 +25,43 @@ angular.module('tys.upload', ['ngRoute'])
         };
 
         $scope.updateQuestionCount = function () {
-            if (isNaN($scope.totalQuestions))
+            if (isNaN($scope.quiz.totalQuestions))
                 return;
 
-            $scope.quiz.questions = [];
+            if($scope.quiz.questions && ($scope.quiz.questions.length === $scope.quiz.totalQuestions))
+                return;
 
-            for (var i = 0; i < $scope.totalQuestions; i++) {
-                var options  = [];
-                for (var j = 0; j < $scope.numberOfOptionsInEachQuestion; j++) {
-                    options.push({id: j+1, value: 'test ' + j.toString()});
+            if ($scope.quiz.questions && $scope.quiz.questions.length > 0) {
+
+                if ($scope.quiz.questions.length > $scope.quiz.totalQuestions) {
+                    $scope.quiz.questions.splice($scope.quiz.totalQuestions, $scope.quiz.questions.length - $scope.quiz.totalQuestions);
+
+                } else {
+
+                    for(var i =$scope.quiz.questions.length+1; i <= $scope.quiz.totalQuestions ; i++){
+                        $scope.quiz.questions.push(generateQuesttion(i));
+                    }
                 }
+            } else {
 
-                var question = { id: i + 1, options: options, title: 'Test Question' };
-                $scope.quiz.questions.push(question);
+                $scope.quiz.questions = [];
+
+                for (var i = 0; i < $scope.quiz.totalQuestions; i++) {
+                    var question = generateQuesttion(i+1);
+                    $scope.quiz.questions.push(question);
+                }
             }
-        }
+        };
 
+        function generateQuesttion(number) {
+            var options = [];
+            for (var j = 0; j < $scope.numberOfOptionsInEachQuestion; j++) {
+                options.push({id: j + 1, value: 'test ' + j.toString()});
+            }
+
+            var question = {id: number, options: options, title: 'Test Question'};
+            return question;
+        }
 
         $scope.cancel = function () {
             window.history.back();
@@ -49,11 +70,11 @@ angular.module('tys.upload', ['ngRoute'])
         $scope.submitForm = function (isValid) {
 
             if (isValid) {
-                $http.post('/api/quizzes', JSON.stringify($scope.quiz)).then(function(res){
+                $http.post('/api/quizzes', JSON.stringify($scope.quiz)).then(function (res) {
                     var id = res.data;
                     $location.path('/quiz/' + id);
 
-                }, function(error){
+                }, function (error) {
                     console.log(error);
                 });
             }

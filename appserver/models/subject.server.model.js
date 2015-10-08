@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var SubjectSchema = new Schema( {
+    code: String,
     name: String,
     notes: String
 });

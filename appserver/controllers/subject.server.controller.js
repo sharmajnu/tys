@@ -13,15 +13,13 @@ var post = function (req, res) {
 
     console.log('starting processing post request...');
 
-    var name = req.body.name
+    var subject = new Subject({
+        name: req.body.name,
+        code: req.body.code
+    });
 
-    var id = createSubject(name);
-    if (id) {
-        res.status(201).json(id);
-    } else {
-        res.status(200).json('Resource already exists!!');
-    }
-    console.log(entry);
+    subject.save();
+    res.status(201).json(subject._id);
 };
 
 var createSubject = function (name, callback) {

@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var Quiz = require('../models/quiz.server.model.js');
 var SubjectController = require('./subject.server.controller.js');
 
@@ -63,10 +64,43 @@ var post = function (req, res) {
     });
 };
 
+var put = function (req, res) {
+
+    console.log('starting processing put request...');
+
+    var id = req.params.id;
+    var entry = {
+        totalQuestions: req.body.totalQuestions,
+        time: req.body.time,
+        title: req.body.title,
+        subject: req.body.subject,
+        award: req.body.award,
+        penalty: req.body.penalty,
+        isSolved: req.body.isSolved,
+        notes: req.body.notes,
+        questions: req.body.questions
+    };
+
+    console.log('**************Updating entry----------');
+    console.log(entry);
+
+    var objectId = mongoose.Types.ObjectId(id);
+    Quiz.update({_id: objectId}, {$set: entry}, function (err, numAffected) {
+        if(err){
+            res.status(500).json({message: err});
+        } else {
+            console.log('-----------------------------' + numAffected);
+            res.status(200).json({});
+        }
+    } );
+};
+
+
 var quizController = {
     get: get,
     post: post,
-    getQuiz: getQuiz
+    getQuiz: getQuiz,
+    put: put
 };
 
 module.exports = quizController;

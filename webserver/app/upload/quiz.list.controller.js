@@ -12,7 +12,6 @@ angular.module('tys.upload')
         $scope.controller = 'Quiz list controller';
         $http.get('/api/quizzes/').then(function (res) {
 
-            console.log(res.data);
             $scope.quizzes = res.data;
 
         }, function (error) {

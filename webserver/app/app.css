@@ -43,6 +43,11 @@
   background: #f7fafb;
 }
 
+.quiz-instructions{
+  color: black;
+  font-family: monospace;
+}
 .quiz-instructions li{
   font-size: 18px;
+  color: black;
 }

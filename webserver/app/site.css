@@ -71,6 +71,9 @@
 .quiz ul li label{
     padding: 1px 10px;
 }
+.quiz ul li label input{
+    margin: 5px 10px;
+}
 .quiz ul li span.glyphicon {
     padding-right: 10px;
 }
@@ -145,3 +148,7 @@
 }
 
 /*#endregion Clock*/
+
+.edit-quiz{
+    line-height: 2.7;
+}
