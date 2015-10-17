@@ -51,7 +51,28 @@
         };
 
         var controller = function ($scope) {
+            $scope.invalidCode = false;
+
             $scope.create = function () {
+                var valid = true;
+                if(!$scope.code){
+                    $scope.invalidCode = true;
+                    valid =false;
+                } else{
+                    $scope.invalidCode = false;
+                }
+
+                if(!$scope.name){
+                    $scope.invalidName = true;
+                    valid = false;
+                } else {
+                    $scope.invalidName = false;
+                }
+
+                if(!valid){
+                    return;
+                }
+
                 var subject ={
                     code: $scope.code,
                     name: $scope.name

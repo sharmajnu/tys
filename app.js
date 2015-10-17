@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var webRoutes = require('./webserver/routes');
 var apiRoutes = require('./appserver/api.routes.js');
+var authRoutes = require('./appserver/controllers/auth.server.controller.js');
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'webserver/app')));
 
 app.use('/', webRoutes);
 app.use('/api', apiRoutes);
+app.use('/auth', authRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

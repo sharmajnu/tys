@@ -3,16 +3,27 @@
 // Declare app level module which depends on views, and components
 angular.module('tys', [
   'ngRoute',
+  'satellizer',
   'tys.home',
   'tys.quizlist',
   'tys.test',
   'tys.version',
   'tys.upload',
+  'tys.authentication',
   'ui.bootstrap'
+
 ]).
-  config(['$routeProvider', function($routeProvider) {
-   $routeProvider.otherwise({redirectTo: '/home'});
-  }])
+  config(['$routeProvider', '$authProvider', '$httpProvider', function($routeProvider, $authProvider, $httpProvider) {
+      $routeProvider.otherwise({redirectTo: '/home'});
+
+      $authProvider.google({
+        clientId: '978616852397-tbcptkaj8q0gjtoak4ap58rndnrd0g37.apps.googleusercontent.com',
+        url: '/auth/google'
+      });
+
+      $httpProvider.interceptors.push('authInterceptor');
+
+    }])
     .filter('startFrom', function () {
       return function (input, start) {
 

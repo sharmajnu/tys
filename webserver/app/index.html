@@ -15,6 +15,8 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="bootstrap.dark.css"/>
+  <link rel="stylesheet" href="login.css"/>
   <style>
     body {
       padding-top: 70px;
@@ -40,13 +42,21 @@
       <a class="navbar-brand" href="#/">Test Your Skills</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse pull-left" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li>
           <a href="#/upload">Upload</a>
         </li>
         <li>
           <a href="#/quizzes">View Tests</a>
+        </li>
+      </ul>
+    </div>
+    <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-2">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="#/login" ng-show="user">Welcome: {{user}}</a>
+          <a href="#/login" ng-show="!user">Login</a>
         </li>
       </ul>
     </div>
@@ -81,14 +91,13 @@
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/satellizer/satellizer.min.js"></script>
 <script src="app.js"></script>
 <script src="directives.js"></script>
 <script src="quiz-service.js"></script>
-
 <script src="dist/controllers.js"></script>
 <script src="upload/quiz.list.controller.js"></script>
-
-
+<script src="login/login.controller.js"></script>
 <script src="components/version/version.js"></script>
 <script src="components/version/version-directive.js"></script>
 <script src="components/version/interpolate-filter.js"></script>
