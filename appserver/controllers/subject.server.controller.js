@@ -40,21 +40,34 @@ var createSubject = function (name, callback) {
     });
 }
 
-var getSubjects = function(callback){
+var getSubjects = function (callback) {
     Subject.find({}, function (err, docs) {
-      if(err){
-          callback(err, null);
-      } else {
-          callback(null, docs);
-      }
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, docs);
+        }
     });
-}
+};
+
+var getSubjectByCode = function (code, callback) {
+    Subject.findOne({code: code}, function (err, subject) {
+
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, subject)
+            }
+        }
+    );
+};
 
 var subjectController = {
     get: get,
     post: post,
     createSubject: createSubject,
-    getSubjects: getSubjects
+    getSubjects: getSubjects,
+    getSubjectByCode: getSubjectByCode
 };
 
 module.exports = subjectController;

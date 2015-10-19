@@ -9,7 +9,7 @@ angular.module('tys.test', ['ngRoute'])
             controller: 'TestController'
         });
     }])
-    .controller('TestController', ['$scope', 'QuizService', '$routeParams', '$interval', function ($scope, QuizService, $routeParams, $interval) {
+    .controller('TestController', ['$scope', '$http', '$routeParams', '$interval', '$rootScope', function ($scope, $http, $routeParams, $interval, $rootScope) {
 
         (function buildModel() {
             $scope.moduleScope = $routeParams.module;
@@ -17,13 +17,27 @@ angular.module('tys.test', ['ngRoute'])
 
             $scope.currentPage = 1;
             $scope.itemsPerPage = 5;
-            $scope.quiz = QuizService.getQuiz();
 
-            setShowSubmit();
+            $http.get('/api/quizzes/' + $routeParams.id)
+                .then(function(response){
+                    $scope.quiz = response.data;
+                    setShowSubmit();
+                    setHoverStyleForQuiz();
+                }, function(error){
+                    $scope.error = error;
+                });
+
             $scope.showResult = false;
-            $scope.showQuestionPaper = true;
+            $scope.testStarted = false;
 
-            setHoverStyleForQuiz();
+            if($rootScope.user) {
+                $scope.userNotLoggedIn = false;
+            } else{
+                $scope.showSubmit = false;
+                $scope.userNotLoggedIn = true;
+            }
+
+            $scope.showStartButton = !$scope.userNotLoggedIn;
 
             //startTimer();
 
@@ -33,6 +47,13 @@ angular.module('tys.test', ['ngRoute'])
             for (var j = 0; j < $scope.quiz.questions.length; j++) {
                 $scope.quiz.questions[j].checked = "quiz2";
             }
+        }
+
+        $scope.startTest = function(){
+            $scope.showQuestionPaper = true;
+            $scope.showStartButton = false;
+
+            startTimer();
         }
 
         $scope.reset = function () {
@@ -174,6 +195,14 @@ angular.module('tys.test', ['ngRoute'])
         };
 
         function setShowSubmit() {
+            if(!$rootScope.user) {
+                $scope.showSubmit = false;
+                return;
+            }
+            if(!($scope.quiz && $scope.quiz.questions)){
+                $scope.showSubmit = false;
+                return;
+            }
             if ($scope.currentPage === Math.ceil($scope.quiz.questions.length / $scope.itemsPerPage)) {
                 $scope.showSubmit = true;
             } else {

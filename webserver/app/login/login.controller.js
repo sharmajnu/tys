@@ -23,10 +23,10 @@ angular.module('tys.authentication', [])
             $auth.authenticate(provider).then(function(response){
 
                 $scope.authenticated = true;
-                $scope.user = response.data.user.name;
+                $scope.user = response.data.user;
                 userContext.user = response.data.user;
                 userContext.isAuthenticated = true;
-                $rootScope.user = $scope.user;
+                $rootScope.user = response.data.user;
             });
 
         };

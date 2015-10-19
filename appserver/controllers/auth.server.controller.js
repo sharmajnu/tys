@@ -33,7 +33,6 @@ router.post('/google', function (req, res) {
             headers: headers,
             json: true
         }, function (err, response, profile) {
-            console.log(profile);
             userController.findOrCreateUser(profile, res, token);
         })
 
@@ -41,7 +40,6 @@ router.post('/google', function (req, res) {
 });
 
 router.post('/refreshToken', function(req, res){
-    console.log(req.headers);
     if(req.headers && req.headers.authorization){
 
         var token = req.headers.authorization.split(' ')[1];

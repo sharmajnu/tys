@@ -31,7 +31,6 @@
 
 
 .site-footer {
-  position: relative;
   margin: 15rem 0 0 0;
   padding: 10rem 0;
   border-top: #ebf2f6 1px solid;
@@ -49,5 +48,4 @@
 }
 .quiz-instructions li{
   font-size: 18px;
-  color: black;
 }

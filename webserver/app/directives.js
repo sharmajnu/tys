@@ -100,4 +100,26 @@
             linker: linker
         };
     }]);
+
+    app.directive('loginBtn', ['$location', function ($location) {
+        var linker = function (scope, element, attr) {
+        };
+
+        var controller = function ($scope) {
+            $scope.navigateToLoginPage = function(){
+                $location.url('/login');
+            }
+        };
+
+        var scope = {
+        };
+        return {
+
+            restrict: 'E',
+            templateUrl: 'template/login-btn.html',
+            controller: controller,
+            scope: scope,
+            linker: linker
+        };
+    }]);
 }());

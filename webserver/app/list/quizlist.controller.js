@@ -3,15 +3,20 @@
 
 angular.module('tys.quizlist', ['ngRoute'])
 
-    .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/list/:module', {
+    .config(['$routeProvider', function ($routeProvider) {
+        $routeProvider.when('/list/:subject', {
             templateUrl: 'list/quizlist.html',
             controller: 'QuizController'
         });
     }])
 
-    .controller('QuizController', ['$scope', 'QuizService', '$routeParams', function ($scope, QuizService, $routeParams) {
-        $scope.moduleScope = $routeParams.module;
-        $scope.quizzes = QuizService.getAllQuizzes();
+    .controller('QuizController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+        $scope.subject = $routeParams.subject;
+        $http.get('/api/quizzes/subject/' + $routeParams.subject)
+            .then(function (result) {
+                $scope.quizzes = result.data;
+            }, function (error) {
+                $scope.error = error;
+            });
     }]);
 

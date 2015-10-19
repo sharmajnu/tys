@@ -2,10 +2,10 @@
 <div class="col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <img src="../img/test.png" style="padding-right: 20px;"/><h3 style="display: inline-block; ">{{quiz.name}}</h3>
+            <img src="../img/test.png" style="padding-right: 20px;"/><h3 style="display: inline-block; ">{{quiz.title}}</h3>
             <div class="row">
                 <div class="col-lg-10">
-                    <span>Total Questions: {{quiz.questions.length}}</span>
+                    <span>Total Questions: {{quiz.totalQuestions}}</span>
                 </div>
                 <div class="col-lg-2" >
                     <span >Max Time: {{quiz.time}} Mins.</span>
@@ -13,6 +13,17 @@
             </div>
         </div>
         <div class="panel-body">
+            <tys-instructions quiz="quiz"></tys-instructions>
+            <div ng-show="userNotLoggedIn" class="alert alert-warning" role="alert">
+                <h3>Please Login to take this test.</h3>
+                <login-btn></login-btn>
+            </div>
+
+            <div ng-show="showStartButton" class="alert alert-success" role="alert">
+                <h4>Click the Start button to Start the test.</h4>
+                <button class="btn btn-success" ng-click="startTest()">Start</button>
+            </div>
+
             <div ng-show="showResult">
                 <!--<div  class="bg-primary" >-->
                 <div class="row">
@@ -45,7 +56,7 @@
                 <div class="quiz {{question.checked}}" ng-class="{quizborder: showResult == false}"
                      ng-repeat="question in quiz.questions | startFrom:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage">
                     <div>
-                        <span class="{{question.checkedClass}}"></span><span class="q-title ">Q{{question.id}}: {{question.question}}</span>
+                        <span class="{{question.checkedClass}}"></span><span class="q-title ">Q{{question.id}}: {{question.title}}</span>
                         <ul class="options">
                             <li ng-disabled="showResult"
                                 ng-repeat="option in question.options"
@@ -66,8 +77,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div style="text-align: right" ng-show="showSubmit" >
                 <input type="button" name="name" value="Reset" ng-click="reset();" class="btn btn-danger" ng-disabled="showResult" />
                 <input type="button" name="name" value="Submit" ng-click="submit();" class="btn btn-success" ng-disabled="showResult" />
@@ -96,8 +105,10 @@
     </table>
 </div>
 
-<!--<script type="text/javascript">
+<!--
+<script type="text/javascript">
     $(document).ready(function () {
         $('#timer').draggable();
     });
-</script>-->
+</script>
+-->

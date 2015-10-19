@@ -7,25 +7,11 @@
 <div class="container">
     <!-- Example row of columns -->
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3" ng-repeat="s in subjects">
             <div class="main-sections">
-                <h2>JavaScript</h2>
-                <p>Test your JavaScript skills by participating in the online test.</p>
-                <p><a class="btn btn-default" href="#/list/js" role="button">View details &raquo;</a></p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="main-sections">
-                <h2>C#</h2>
-                <p>Test your C# skills by participating in the online test.</p>
-                <p><a class="btn btn-default" href="#/list/js" role="button">View details &raquo;</a></p>
-            </div>
-        </div>
-        <div class="col-md-4 ">
-            <div class="main-sections">
-                <h2>JAVA</h2>
-                <p>Test your JAVA skills by participating in the online test.</p>
-                <p><a class="btn btn-default" href="#/list/js" role="button">View details &raquo;</a></p>
+                <h2>{{s.name}}</h2>
+                <p>Test your {{s.name}} skills by participating in the online test.</p>
+                <p><a class="btn btn-default" href="#/list/{{s.code}}" role="button">View details &raquo;</a></p>
             </div>
         </div>
     </div>

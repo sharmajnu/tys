@@ -12,6 +12,7 @@ router.get('/products', productController.get);
 router.post('/products', productController.post);
 
 router.get('/quizzes', quizController.get);
+router.get('/quizzes/subject/:subject', quizController.getBySubject);
 router.get('/quizzes/:id', quizController.getQuiz);
 router.post('/quizzes', quizController.post);
 router.put('/quizzes/:id', quizController.put);

@@ -15,7 +15,7 @@ angular.module('tys')
                         that.user = response.data.user;
                         $auth.setToken(response.data.token);
                         that.isAuthenticated = true;
-                        $rootScope.user = response.data.user.name;
+                        $rootScope.user = response.data.user;
                         $rootScope.$apply();
                     }, function (error) {
                         that.isAuthenticated = false;

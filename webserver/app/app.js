@@ -14,6 +14,9 @@ angular.module('tys', [
 
 ]).
   config(['$routeProvider', '$authProvider', '$httpProvider', function($routeProvider, $authProvider, $httpProvider) {
+      $routeProvider.when('/unauthorized', {
+        templateUrl: 'unauthorized/unauthorized.html'
+      });
       $routeProvider.otherwise({redirectTo: '/home'});
 
       $authProvider.google({
@@ -32,4 +35,10 @@ angular.module('tys', [
           return input.slice(start);
         }
       };
-    });
+    })
+
+    .controller('HeaderController', ['$scope', '$rootScope', 'userContext', function ($scope, $rootScope, userContext) {
+      $rootScope.$watch('user', function(){
+        $scope.user = $rootScope.user;
+      }, true);
+    }]);
