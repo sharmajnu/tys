@@ -10,17 +10,19 @@ angular.module('tys.upload')
     }])
     .controller('QuizEditController', ['$scope', '$http', '$routeParams', '$location', function($scope, $http, $routeParams, $location){
         $scope.id =  $routeParams.id;
-        $http.get('/api/quizzes/' + $scope.id).then(function (res) {
+        $http.get('/api/s/quizzes/' + $scope.id).then(function (res) {
             $scope.quiz = res.data;
 
         }, function (error) {
             console.log(error);
         });
 
+        loadSubjects();
+
         $scope.submitForm = function (isValid) {
 
             if (isValid) {
-                $http.put('/api/quizzes/' + $scope.id, JSON.stringify($scope.quiz)).then(function(res){
+                $http.put('/api/s/quizzes/' + $scope.id, JSON.stringify($scope.quiz)).then(function(res){
                     $location.path('/quiz/' + $scope.id);
 
                 }, function(error){
@@ -31,4 +33,12 @@ angular.module('tys.upload')
         $scope.cancel = function(){
             window.history.back();
         };
+
+        function loadSubjects(){
+            $http.get('/api/subjects').then(function(res){
+                $scope.subjects = res.data;
+            }, function(error){
+                console.log(error);
+            })
+        }
     }]);

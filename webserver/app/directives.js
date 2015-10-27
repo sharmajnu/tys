@@ -30,6 +30,21 @@
         };
 
         var controller = function ($scope) {
+            $scope.$watch('quiz', function () {
+                if($scope.quiz && $scope.quiz.notes) {
+                    $scope.quiz.instructions = (function () {
+                        var finalArray = [];
+                        var rawArray = $scope.quiz.notes.split('\n');
+                        for (var i = 0; i < rawArray.length; i++) {
+                            if (rawArray[i]) {
+                                finalArray.push(rawArray[i]);
+                            }
+                        }
+                        return finalArray;
+                    }());
+                }
+            })
+
         };
 
         var scope = {
@@ -78,7 +93,7 @@
                     name: $scope.name
                 };
 
-                $http.post('/api/subjects', subject).then(function(res){
+                $http.post('/api/s/subjects', subject).then(function(res){
                     $scope.newSubject = res;
                     $scope.code  = $scope.name = "";
                     $('#myModal').modal('hide');

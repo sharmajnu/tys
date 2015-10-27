@@ -14,6 +14,7 @@
     "bootstrap": "~3.3.5",
     "angular-bootstrap": "~0.13.4",
     "satellizer": "~0.12.5",
-    "Ionicons": "ionicons#~2.0.1"
+    "Ionicons": "ionicons#~2.0.1",
+    "jquery-ui": "~1.11.4"
   }
 }

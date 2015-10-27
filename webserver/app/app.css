@@ -49,3 +49,23 @@
 .quiz-instructions li{
   font-size: 18px;
 }
+
+.helper{
+  font-size: 13px;
+}
+.btn-lg{
+  margin: 2px;
+}
+
+.score-card{
+  border: 1px solid #3498db;
+
+}
+
+.score-card table{
+  margin-bottom:  0px;
+}
+
+.score-card .col-lg-6{
+  padding-right: 0px;
+}

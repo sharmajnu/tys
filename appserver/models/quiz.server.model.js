@@ -23,9 +23,14 @@ var QuizSchema = new Schema({
     penalty: Number,
     isSolved: Boolean,
     notes: String,
+    topic: String,
+    level: String,
+    published: Boolean,
     questions: [QuestionSchema],
     createdDate: {type: Date, default: Date.now},
-    updateDate: {type: Date, default: Date.now}
+    updateDate: {type: Date, default: Date.now},
+    createBy: mongoose.Schema.Types.ObjectId,
+    updatedBy: mongoose.Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Quiz', QuizSchema);

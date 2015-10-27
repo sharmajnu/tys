@@ -9,19 +9,6 @@ var get = function (req, res) {
     });
 };
 
-var post = function (req, res) {
-
-    console.log('starting processing post request...');
-
-    var subject = new Subject({
-        name: req.body.name,
-        code: req.body.code
-    });
-
-    subject.save();
-    res.status(201).json(subject._id);
-};
-
 var createSubject = function (name, callback) {
 
     Subject.findOne({name: name}, function (err, doc) {
@@ -64,7 +51,6 @@ var getSubjectByCode = function (code, callback) {
 
 var subjectController = {
     get: get,
-    post: post,
     createSubject: createSubject,
     getSubjects: getSubjects,
     getSubjectByCode: getSubjectByCode

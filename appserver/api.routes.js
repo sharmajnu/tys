@@ -1,23 +1,36 @@
-/**
- * Created by DEEPAK.SHARMA on 10/3/2015.
- */
+
 var express = require('express');
 var router = express.Router();
 
-var productController = require('./controllers/products.server.controller.js');
 var quizController = require('./controllers/quiz.server.controller.js');
 var subjectController = require('./controllers/subject.server.controller.js');
 
-router.get('/products', productController.get);
-router.post('/products', productController.post);
+
+var securedQuizController = require('./controllers/quiz.secure.controller.js');
+var securedSubjectController = require('./controllers/subject.secure.controller.js');
+
+var securedUserController = require('./controllers/user.server.controller.js');
+var securedTestController = require('./controllers/test.secure.controller.js');
 
 router.get('/quizzes', quizController.get);
 router.get('/quizzes/subject/:subject', quizController.getBySubject);
 router.get('/quizzes/:id', quizController.getQuiz);
-router.post('/quizzes', quizController.post);
-router.put('/quizzes/:id', quizController.put);
-
 router.get('/subjects', subjectController.get);
-router.post('/subjects', subjectController.post);
+
+router.get('/s/quizzes/editlist', securedQuizController.getForEditList);
+router.get('/s/quizzes/:id', securedQuizController.getForEdit);
+
+router.post('/s/subjects', securedSubjectController.post);
+router.post('/s/quizzes', securedQuizController.post);
+router.put('/s/quizzes/:id', securedQuizController.put);
+router.post('/s/quizzes/:id/publish', securedQuizController.publish);
+
+router.get('/s/users', securedUserController.get);
+router.get('/s/users/:id', securedUserController.getById);
+router.post('/s/users/:id/perm', securedUserController.changePerm);
+
+router.post('/s/test/updateprogress', securedTestController.updateProgress);
+router.post('/s/test/submit', securedTestController.submitTest);
+router.post('/s/test/:id/start', securedTestController.startTest);
 
 module.exports = router;

@@ -5,24 +5,18 @@
             <h3>{{subject}} Tests</h3>
         </div>
         <div class="panel-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Test</th>
-                        <th>Rating</th>
-                    </tr>
-                </thead>
-                <tr ng-repeat="quiz in quizzes">
-                    <td>{{quiz._id}}</td>
-                    <td>
-                        <a href="#/test/{{quiz._id}}">
-                            {{quiz.title}}
-                        </a>
-                    </td>
-                    <td>4</td>
-                </tr>
-            </table>
+            <div ng-repeat="quiz in quizzes" class="row" style="border-bottom: 1px solid #c4e3f3; padding-bottom: 5px;">
+                <div class="col-md-12">
+                    <a href="#/test/{{quiz._id}}">
+                        <h4>{{quiz.title}}</h4>
+                    </a>
+                </div>
+                <div class="columns">
+                    <div class="col-md-6"><span class="helper">Topic: Garbage Collection</span> </div>
+                    <div class="col-md-3"><img src="img/levels/{{quiz.level}}.png" style="padding-right: 5px; height: 13px;" /><span class="helper">{{quiz.level}}</span> </div>
+                    <div class="col-md-3"><span class="helper"> #{{quiz.totalQuestions}} questions</span></div>
+                </div>
+            </div>
         </div>
         <div class="panel-footer">Total tests: {{quizzes.length}}</div>
     </div>

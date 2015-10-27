@@ -15,10 +15,14 @@ angular.module('tys.test', ['ngRoute'])
             $scope.moduleScope = $routeParams.module;
             $scope.answers = {};
 
+            $scope.showInstructions = true;
+
+            $scope.id = $routeParams.id;
+
             $scope.currentPage = 1;
             $scope.itemsPerPage = 5;
 
-            $http.get('/api/quizzes/' + $routeParams.id)
+            $http.get('/api/quizzes/' + $scope.id)
                 .then(function(response){
                     $scope.quiz = response.data;
                     setShowSubmit();
@@ -33,27 +37,36 @@ angular.module('tys.test', ['ngRoute'])
             if($rootScope.user) {
                 $scope.userNotLoggedIn = false;
             } else{
-                $scope.showSubmit = false;
                 $scope.userNotLoggedIn = true;
             }
 
             $scope.showStartButton = !$scope.userNotLoggedIn;
 
-            //startTimer();
 
         }());
 
         function setHoverStyleForQuiz() {
+            if(!($scope.quiz && $scope.quiz.questions)){
+                return;
+            }
             for (var j = 0; j < $scope.quiz.questions.length; j++) {
                 $scope.quiz.questions[j].checked = "quiz2";
             }
         }
 
         $scope.startTest = function(){
-            $scope.showQuestionPaper = true;
-            $scope.showStartButton = false;
+            $http.post('/api/s/test/' + $scope.id + '/start', {}).then(function(res){
+                $scope.quiz = res.data.quiz;
+                $scope.trackingId = res.data.trackingId;
+                $scope.showQuestionPaper = true;
+                $scope.showStartButton = false;
+                $scope.showSubmit = true;
 
-            startTimer();
+                startTimer();
+
+            }, function(err){
+                console.log(err);
+            });
         }
 
         $scope.reset = function () {
@@ -66,54 +79,45 @@ angular.module('tys.test', ['ngRoute'])
 
             stopTimer();
 
+            var givenAnswers = [];
 
-            initializeScoreVariables();
+            for (var i = 0; i < $scope.quiz.questions.length; i++) {
+                var ga = $scope.quiz.questions[i].givenAnswer;
 
-            if ($scope.quiz.solved) {
+                var answer = ga? parseInt(ga): null
+                givenAnswers.push({
+                                    questionId: $scope.quiz.questions[i].id,
+                                    answer: answer});
 
-                var actualAnswers = QuizService.getAnswers($scope.quiz.id);
-
-                for (var i = 0; i < actualAnswers.length; i++) {
-                    for (var j = 0; j < $scope.quiz.questions.length; j++) {
-                        if ($scope.quiz.questions[j].id === actualAnswers[i].id) {
-
-                            (function fillQuestionObject() {
-                                $scope.quiz.questions[j].answer = actualAnswers[i].answer;
-                                $scope.quiz.questions[j].description = actualAnswers[i].description;
-                                $scope.quiz.questions[j].checked = getClassName(actualAnswers[i].answer, $scope.quiz.questions[j].givenAnswer);
-                                $scope.quiz.questions[j].checkedClass = getIconClassName(actualAnswers[i].answer, $scope.quiz.questions[j].givenAnswer);
-                            }());
-                            break;
-                        }
-                    }
-
-                }
-
-                $scope.finalScore = $scope.correctAnswers * 4 - $scope.wrongAnswers;
+                console.log(givenAnswers);
             }
-            else {
 
-                $scope.showQuestionPaper = false;
+            var postPayload = {
+                trackingId: $scope.trackingId,
+                quizId: $scope.id,
+                answers: givenAnswers
+            };
 
+            $http.post('/api/s/test/submit', JSON.stringify(postPayload)).then(function(res){
+                $scope.result = res.data;
+                $scope.showResult = true;
+                $scope.showInstructions = false;
 
-                var answerSheet = buildAnswerSheet();
-                var result = QuizService.getResult(answerSheet);
+                window.scrollTo(0,0);
 
-                $scope.correctAnswers = result.rightAnswers;
-                $scope.wrongAnswers = result.wrongAnswers;
-                $scope.finalScore = result.totalMarks;
-
-            }
+            }, function(err){
+               console.error(err);
+            });
             $scope.showSubmit = false;
             $scope.showResult = true;
 
-        }
+        };
 
         var countdownInterval;
         function startTimer() {
 
             var minuites = $scope.quiz.time - 1;
-            var seconds = 10;
+            var seconds = 60;
 
 
             var decrementCountDown = function () {
@@ -157,12 +161,6 @@ angular.module('tys.test', ['ngRoute'])
             var answerSheet = { quizId: $scope.quiz.id, answers: givenAnswers };
 
             var actualAnswers = QuizService.getResult($scope.quiz.id);
-        }
-
-        function initializeScoreVariables() {
-            $scope.correctAnswers = 0;
-            $scope.wrongAnswers = 0;
-            $scope.finalScore = 0;
         }
 
         function getIconClassName(actualAnswer, givenAnswer) {

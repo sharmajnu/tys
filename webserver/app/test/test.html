@@ -13,38 +13,31 @@
             </div>
         </div>
         <div class="panel-body">
-            <tys-instructions quiz="quiz"></tys-instructions>
-            <div ng-show="userNotLoggedIn" class="alert alert-warning" role="alert">
-                <h3>Please Login to take this test.</h3>
-                <login-btn></login-btn>
-            </div>
-
-            <div ng-show="showStartButton" class="alert alert-success" role="alert">
-                <h4>Click the Start button to Start the test.</h4>
-                <button class="btn btn-success" ng-click="startTest()">Start</button>
-            </div>
 
             <div ng-show="showResult">
-                <!--<div  class="bg-primary" >-->
-                <div class="row">
-                    <div class="col-lg-6 bg-warning" style="text-align: center; vertical-align: middle">
-                        <h1 style="font-size: 75px;"> #Score card</h1>
+                <div class="row score-card" >
+                    <div class="col-lg-6 bg-info" style="text-align: center; vertical-align: middle; height: 151px">
+                        <h1 style="font-size: 75px; line-height: 100px"> #Score card</h1>
                     </div>
                     <div class="col-lg-6">
                         <table class="table table-hover">
                             <tbody>
                             <tr>
                                 <td><span class="glyphicon glyphicon-ok"></span>Correct Answers</td>
-                                <td>{{correctAnswers}}</td>
+                                <td>{{result.rightAnswers}}</td>
                             </tr>
                             <tr>
                                 <td><span class="glyphicon glyphicon-remove"></span>Wrong Answers</td>
-                                <td>{{wrongAnswers}}</td>
+                                <td>{{result.wrongAnswers}}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="glyphicon glyphicon-remove"></span>Not attempted</td>
+                                <td>{{result.notAttempted}}</td>
                             </tr>
 
                             <tr class="well well-lg" style="font-weight: bold; font-size: 16px;">
                                 <td># Total Score</td>
-                                <td>{{finalScore}}</td>
+                                <td>{{result.totalScore}}</td>
                             </tr>
 
                             </tbody>
@@ -52,28 +45,37 @@
                     </div>
                 </div>
             </div>
+            <tys-instructions quiz="quiz" ng-show="showInstructions"></tys-instructions>
+            <div ng-show="userNotLoggedIn" class="alert alert-warning" role="alert">
+                <h3>Please Login to take this test.</h3>
+                <login-btn></login-btn>
+            </div>
+
+            <div ng-show="showStartButton" class="well">
+                <h4>Click the Start button to Start the test.</h4>
+                <button class="btn btn-success" ng-click="startTest()">Start</button>
+            </div>
+
             <div ng-show="showQuestionPaper">
                 <div class="quiz {{question.checked}}" ng-class="{quizborder: showResult == false}"
                      ng-repeat="question in quiz.questions | startFrom:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage">
                     <div>
                         <span class="{{question.checkedClass}}"></span><span class="q-title ">Q{{question.id}}: {{question.title}}</span>
                         <ul class="options">
-                            <li ng-disabled="showResult"
+                            <li
                                 ng-repeat="option in question.options"
 
-                                ng-class="{actualanswer: question.answer == {{option.key}}, checked: question.givenAnswer == {{option.key}}}">
+                                ng-class="checked: question.givenAnswer == {{option.key}}">
 
 
                                 <label style="font-weight: normal">
                                     <input type="radio" ng-disabled="showResult"
-                                           name="{{question.id}}" value="{{option.key}}"
+                                           name="{{question.id}}" value="{{option.id}}"
                                            ng-model="question.givenAnswer">{{option.value}}
                                 </label>
-                                <span ng-show="question.answer == option.key" class="glyphicon glyphicon-check"></span>
+                                <span ng-show="question.answer == option.id" class="glyphicon glyphicon-check"></span>
                             </li>
-
                         </ul>
-                        <p ng-show="showResult" style="padding: 5px;">[<b>Explanation:</b> {{question.description}}]</p>
                     </div>
                 </div>
             </div>
@@ -105,10 +107,9 @@
     </table>
 </div>
 
-<!--
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#timer').draggable();
     });
 </script>
--->

@@ -13,6 +13,10 @@ angular.module('tys.upload', ['ngRoute'])
     }])
     .controller('UploadController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
 
+        $scope.subjects = [];
+
+        loadSubjects();
+
         $scope.numberOfOptionsInEachQuestion = 4;
 
         $scope.quiz = {
@@ -70,7 +74,7 @@ angular.module('tys.upload', ['ngRoute'])
         $scope.submitForm = function (isValid) {
 
             if (isValid) {
-                $http.post('/api/quizzes', JSON.stringify($scope.quiz)).then(function (res) {
+                $http.post('/api/s/quizzes', JSON.stringify($scope.quiz)).then(function (res) {
                     var id = res.data;
                     $location.path('/quiz/' + id);
 
@@ -79,5 +83,13 @@ angular.module('tys.upload', ['ngRoute'])
                 });
             }
         };
+
+        function loadSubjects(){
+            $http.get('/api/subjects').then(function(res){
+                $scope.subjects = res.data;
+            }, function(error){
+                console.log(error);
+            })
+        }
     }
     ]);
