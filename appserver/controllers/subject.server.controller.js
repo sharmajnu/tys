@@ -5,7 +5,6 @@ var get = function (req, res) {
     Subject.find().exec(function (err, results) {
         result = results;
         res.status(200).json(result);
-        console.log(results);
     });
 };
 

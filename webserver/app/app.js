@@ -10,6 +10,7 @@ angular.module('tys', [
   'tys.version',
   'tys.upload',
   'tys.authentication',
+  'tys.admin',
   'ui.bootstrap'
 
 ]).
@@ -41,4 +42,17 @@ angular.module('tys', [
       $rootScope.$watch('user', function(){
         $scope.user = $rootScope.user;
       }, true);
-    }]);
+    }])
+
+    .controller('ConfirmModalDialogCtrl', function ($scope, $modalInstance, message) {
+
+      $scope.message = message;
+
+      $scope.ok = function () {
+        $modalInstance.close('ok');
+      };
+
+      $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+      };
+    });

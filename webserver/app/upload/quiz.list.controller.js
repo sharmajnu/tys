@@ -10,7 +10,7 @@ angular.module('tys.upload')
     }])
     .controller('QuizListController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
         $scope.controller = 'Quiz list controller';
-        $http.get('/api/quizzes/').then(function (res) {
+        $http.get('/api/s/quizzes/editlist').then(function (res) {
 
             $scope.quizzes = res.data;
 

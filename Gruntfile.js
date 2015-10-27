@@ -9,10 +9,12 @@ module.exports = function(grunt){
             dist: {
                 src: [  'webserver/app/home/*.js',
                         'webserver/app/list/*.js',
-                        'webserver/app/test/*.js',
+                        //'webserver/app/test/*.js',
                         'webserver/app/upload/upload.*.js',
                         'webserver/app/upload/quiz.*.js',
-                        'webserver/app/services/*.js'
+                        'webserver/app/services/*.js',
+                        'webserver/app/admin/user.list.controller.js',
+                        'webserver/app/admin/user.admin.edit.controller.js'
                     ],
 
                 dest: 'webserver/app/dist/controllers.js'
