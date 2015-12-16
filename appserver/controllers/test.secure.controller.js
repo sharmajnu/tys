@@ -1,13 +1,15 @@
 var Quiz = require('../models/quiz.server.model.js');
 var authHelper = require('../helpers/auth.helper.js');
 var TestResult = require('../models/test.result.server.model.js');
+var User = require('../models/user.server.model.js');
+var mongoose = require('mongoose');
 
 var startTest = function (req, res) {
-    console.log('started processing start test');
+
     var payload = authHelper.getAuthPayload(req);
 
     if (payload && payload.sub && payload.roles && payload.roles.public) {
-        Quiz.findById(req.params.id, {'questions.answer': 0}, function (err, quiz) {
+        Quiz.findById(req.params.id, {'questions.answer': 0, 'questions.explanation': 0}, function (err, quiz) {
             if (err) {
                 res.status(404).json({message: 'Quiz does not exists'});
             } else {
@@ -25,6 +27,7 @@ function saveStartTestInDB(res, quiz, payload) {
         userId: payload.sub,
         startTime: Date.now(),
         testTime: quiz.time,
+        quizTitle: quiz.title,
         answerProgress: []
     });
 
@@ -83,7 +86,7 @@ var submitTest = function(req, res) {
                     if(testResult){
                         //TODO: Implement the validation with server side time
                         //testResult.startTime;
-                        updateTestResult(trackingId, quiz, finalAnswers, res);
+                        updateTestResult(trackingId, quiz, finalAnswers, res, payload);
                     }
                 })
 
@@ -94,6 +97,24 @@ var submitTest = function(req, res) {
         res.status(401).json(authHelper.unautorizedMessage);
     }
 };
+
+var myAttemptedTests = function(req, res){
+
+    try {
+        var payload = authHelper.getAuthPayload(req);
+        if (payload && payload.sub) {
+            var userId = mongoose.Types.ObjectId(payload.sub);
+
+            TestResult.find({userId: userId}, {quizId: 1, quizTitle: 1, totalScore: 1, startTime: 1}).sort({'startTime': 'descending'}).exec(function (err, myTests) {
+                res.status(200).json(myTests);
+            });
+        } else {
+            res.status(401).json(authHelper.unautorizedMessage);
+        }
+    }catch(e){
+        console.log(e);
+    }
+}
 
 function calculateScore(quiz, finalAnswers){
     var rightAnswers = 0;
@@ -117,7 +138,6 @@ function calculateScore(quiz, finalAnswers){
     }
 
     var totalScore = rightAnswers* quiz.award + wrongAnswers * quiz.penalty;
-    console.log('Total Score is : ' + totalScore);
 
     return {
         rightAnswers: rightAnswers,
@@ -128,7 +148,7 @@ function calculateScore(quiz, finalAnswers){
 
 }
 
-function updateTestResult(trackingId, quiz, finalAnswers, res){
+function updateTestResult(trackingId, quiz, finalAnswers, res, payload){
     var score = calculateScore(quiz, finalAnswers);
     var update = {
         rightAnswers: score.rightAnswers,
@@ -139,6 +159,9 @@ function updateTestResult(trackingId, quiz, finalAnswers, res){
         finalAnswers: finalAnswers
     };
 
+
+    var tyscore =(score.totalScore * 100)/quiz.award;
+
     TestResult.findByIdAndUpdate(trackingId,
         {$set: update},
         {safe: true, upsert: true, new: true},
@@ -148,13 +171,37 @@ function updateTestResult(trackingId, quiz, finalAnswers, res){
                 res.status(500).json(err);
             } else {
                 delete testResult.answerProgress;
-                res.status(200).json(testResult);
+                if(quiz.isSolved) {
+                    Quiz.findById(quiz._id, {'questions.id': 1, 'questions.answer': 1, 'questions.explanation': 1}, function (err, answers) {
+                        if (err) {
+                            res.status(404).json({message: 'Quiz does not exists'});
+                        } else {
+                            var result = {
+                                answers: answers,
+                                result: testResult
+                            };
+                            res.status(200).json(result);
+                        }
+                    });
+                }else {
+                    res.status(200).json({result:testResult });
+                }
             }
         });
+
+    User.findByIdAndUpdate(payload.sub,
+        {$inc: {tyscore: tyscore}},
+        {safe: true, upsert: true},
+        function (err, user) {
+
+        });
 }
+
+
 
 module.exports = {
     startTest: startTest,
     updateProgress: updateProgress,
-    submitTest: submitTest
+    submitTest: submitTest,
+    myAttemptedTests: myAttemptedTests
 };

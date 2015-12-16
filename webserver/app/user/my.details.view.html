@@ -1,0 +1,65 @@
+<div class="row">
+<div class="col-md-12" >
+
+    <div style="border-bottom: 1px solid silver; margin-bottom: 5px">
+        <h1>My Details</h1>
+    </div>
+
+</div>
+
+<div class="col-md-6 ">
+<div class="well">
+    <!--<div style="background-color: white;margin:0 auto;-->
+                <!--border: 1px solid white; height: 200px; width: 200px; border-radius: 100px;-->
+                <!--box-shadow: 0px 0px 10px;">-->
+
+    <!--</div>-->
+
+    <h3>Profile</h3>
+    <table class="table table-striped" style="margin-top: 10px;">
+        <tr>
+            <td style="width: 30%;">
+                <b>Name: </b>
+            </td>
+            <td>
+                {{user.name}}
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 30%;">
+                <b>Email: </b>
+            </td>
+            <td>
+                {{user.email}}
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 30%">
+                <b>Tyscore: </b>
+            </td>
+            <td>
+                {{user.tyscore}}
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+
+<div class="col-md-6">
+    <div class="well">
+    <h3>My Test Score</h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Test</th>
+            <th>Score</th>
+            <th>Start date</th>
+        </tr>
+        <tr ng-repeat="test in tests">
+            <td>{{test.quizTitle}}</td>
+            <td>{{test.totalScore}}</td>
+            <td>{{test.startTime  | date:"MM/dd/yyyy h:mma"}}</td>
+        </tr>
+    </table>
+    </div>
+</div>
+</div>

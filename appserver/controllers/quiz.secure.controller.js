@@ -31,7 +31,6 @@ var getForEditList = function (req, res) {
                     }
                 }
                 res.status(200).json(returnedData);
-                console.log(quizzes);
             }
         });
 
@@ -99,7 +98,7 @@ var put = function (req, res) {
                 console.log(err);
                 res.status(500).json({message: err});
             } else {
-                console.log('-----------------------------' + numAffected);
+
                 res.status(200).json({});
             }
         });

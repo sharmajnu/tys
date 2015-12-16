@@ -18,6 +18,7 @@ var TestResultSchema = mongoose.Schema({
     quizId: mongoose.Schema.Types.ObjectId,
     testTime: Number,
     startTime: Date,
+    quizTitle: String,
 
     answerProgress: [AnswerProgress],
 

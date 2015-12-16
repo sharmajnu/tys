@@ -20,7 +20,6 @@ var get = function (req, res) {
                     }
                 }
                 res.status(200).json(returnedData);
-                console.log(quizzes);
             }
         });
 
@@ -53,7 +52,6 @@ var getBySubject = function (req, res) {
 
 var getQuiz = function (req, res) {
     var id = req.params.id;
-    console.log('GetQuiz finding by id ' + id);
     Quiz.findById(req.params.id,{questions: 0, __v: 0} , function (err, quiz) {
         if (err) {
             res.status(404).json({message: 'Quiz does not exists'});

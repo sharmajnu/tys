@@ -13,6 +13,7 @@ angular.module('tys.test', ['ngRoute'])
 
         (function buildModel() {
             $scope.moduleScope = $routeParams.module;
+            $scope.instructionVisible = true;
             $scope.answers = {};
 
             $scope.showInstructions = true;
@@ -42,7 +43,23 @@ angular.module('tys.test', ['ngRoute'])
 
             $scope.showStartButton = !$scope.userNotLoggedIn;
 
-
+            $scope.sliderOption = {
+                from: 1,
+                to: 10,
+                floor: true,
+                step: 1,
+                dimension: " questions",
+                vertical: false,
+                callback: function(value, elt) {
+                    console.log(value);
+                },
+                css: {
+                    background: {"background-color": "silver"},
+                    before: {"background-color": "#3498db"},
+                    after: {"background-color": "#3498db"},
+                    pointer: {"background-color": "#b3d4fc"}
+                }
+            };
         }());
 
         function setHoverStyleForQuiz() {
@@ -54,6 +71,9 @@ angular.module('tys.test', ['ngRoute'])
             }
         }
 
+        $scope.toggleInstructions = function(){
+            $scope.showInstructions = ! $scope.showInstructions;
+        }
         $scope.startTest = function(){
             $http.post('/api/s/test/' + $scope.id + '/start', {}).then(function(res){
                 $scope.quiz = res.data.quiz;
@@ -61,6 +81,7 @@ angular.module('tys.test', ['ngRoute'])
                 $scope.showQuestionPaper = true;
                 $scope.showStartButton = false;
                 $scope.showSubmit = true;
+                $scope.showInstructions = false;
 
                 startTimer();
 
@@ -99,11 +120,38 @@ angular.module('tys.test', ['ngRoute'])
             };
 
             $http.post('/api/s/test/submit', JSON.stringify(postPayload)).then(function(res){
-                $scope.result = res.data;
+                $scope.response = res.data;
                 $scope.showResult = true;
                 $scope.showInstructions = false;
 
                 window.scrollTo(0,0);
+
+                if($scope.quiz.isSolved){
+                    var answersFromServer = $scope.response.answers.questions;
+                    for(var i=0; i < $scope.quiz.questions.length; i++){
+                        for(var j=0; j < answersFromServer.length; j++){
+                            if($scope.quiz.questions[i].id === answersFromServer[j].id){
+                                $scope.quiz.questions[i].answer = answersFromServer[j].answer;
+                                if($scope.quiz.questions[i].givenAnswer){
+                                    if($scope.quiz.questions[i].givenAnswer == answersFromServer[j].answer){
+                                        $scope.quiz.questions[i].checked = "answer right-answer";
+                                        $scope.quiz.questions[i].checkedClass = "glyphicon glyphicon-ok"
+                                    }else{
+                                        $scope.quiz.questions[i].checked = "answer wrong-answer";
+                                        $scope.quiz.questions[i].checkedClass = "glyphicon glyphicon-remove"
+                                    }
+
+                                }else{
+                                    $scope.quiz.questions[i].checked = "not-attempted";
+                                    $scope.quiz.questions[i].checkedClass = ""
+                                }
+                            }
+                        }
+                    }
+
+                } else{
+                    $scope.showQuestionPaper = false;
+                }
 
             }, function(err){
                console.error(err);
@@ -149,48 +197,6 @@ angular.module('tys.test', ['ngRoute'])
             $interval.cancel(countdownInterval);
 
         }
-        function buildAnswerSheet() {
-            var givenAnswers = [];
-
-            for (var i = 0; i < $scope.quiz.questions.length; i++) {
-                if ($scope.quiz.questions[i].givenAnswer) {
-                    givenAnswers.push({ id: $scope.quiz.questions[i].id, answer: $scope.quiz.questions[i].givenAnswer });
-                }
-            }
-
-            var answerSheet = { quizId: $scope.quiz.id, answers: givenAnswers };
-
-            var actualAnswers = QuizService.getResult($scope.quiz.id);
-        }
-
-        function getIconClassName(actualAnswer, givenAnswer) {
-            if (!givenAnswer)
-                return "";
-            if (actualAnswer == givenAnswer) {
-                $scope.correctAnswers += 1;
-                return "glyphicon glyphicon-ok";
-            } else {
-                $scope.wrongAnswers += 1;
-                return "glyphicon glyphicon-remove";
-            }
-        }
-
-        function getClassName(actualAnswer, givenAnswer) {
-            if (!givenAnswer)
-                return "not-attempted";
-            if (actualAnswer == givenAnswer) {
-                return "answer right-answer";
-                //return "alert-success right-answer";
-            } else {
-                return "answer wrong-answer";
-                //return "alert-danger wrong-answer";
-            }
-        }
-
-        $scope.pageChanged = function () {
-            setShowSubmit();
-
-        };
 
         function setShowSubmit() {
             if(!$rootScope.user) {

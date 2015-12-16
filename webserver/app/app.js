@@ -4,6 +4,8 @@
 angular.module('tys', [
   'ngRoute',
   'satellizer',
+  'angularAwesomeSlider',
+
   'tys.home',
   'tys.quizlist',
   'tys.test',
@@ -11,6 +13,7 @@ angular.module('tys', [
   'tys.upload',
   'tys.authentication',
   'tys.admin',
+  'tys.me',
   'ui.bootstrap'
 
 ]).

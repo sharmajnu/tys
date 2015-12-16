@@ -24,20 +24,20 @@
                             <tbody>
                             <tr>
                                 <td><span class="glyphicon glyphicon-ok"></span>Correct Answers</td>
-                                <td>{{result.rightAnswers}}</td>
+                                <td>{{response.result.rightAnswers}}</td>
                             </tr>
                             <tr>
                                 <td><span class="glyphicon glyphicon-remove"></span>Wrong Answers</td>
-                                <td>{{result.wrongAnswers}}</td>
+                                <td>{{response.result.wrongAnswers}}</td>
                             </tr>
                             <tr>
                                 <td><span class="glyphicon glyphicon-remove"></span>Not attempted</td>
-                                <td>{{result.notAttempted}}</td>
+                                <td>{{response.result.notAttempted}}</td>
                             </tr>
 
                             <tr class="well well-lg" style="font-weight: bold; font-size: 16px;">
                                 <td># Total Score</td>
-                                <td>{{result.totalScore}}</td>
+                                <td>{{response.result.totalScore}}</td>
                             </tr>
 
                             </tbody>
@@ -45,7 +45,25 @@
                     </div>
                 </div>
             </div>
-            <tys-instructions quiz="quiz" ng-show="showInstructions"></tys-instructions>
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="pull-right" ng-hide="showResult || showInstructions" ng-click="toggleInstructions()">Show Instructions</a>
+                    <tys-instructions quiz="quiz" ng-show="showInstructions"></tys-instructions>
+                    <a class="pull-right" ng-show="showInstructions" ng-click="toggleInstructions()">Hide Instructions</a>
+                </div>
+
+            </div>
+            <div class="row" ng-hide="showResult">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                        <span style="margin: 0px auto; display: table">How many questions you want to see per page?</span>
+                        <input ng-model="itemsPerPage"  type="text" id="itemsPerPage" slider options="sliderOption"  />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             <div ng-show="userNotLoggedIn" class="alert alert-warning" role="alert">
                 <h3>Please Login to take this test.</h3>
                 <login-btn></login-btn>
@@ -65,7 +83,8 @@
                             <li
                                 ng-repeat="option in question.options"
 
-                                ng-class="checked: question.givenAnswer == {{option.key}}">
+                                ng-class="{actualanswer: question.answer == option.id, checked: question.givenAnswer == option.id }"
+                                >
 
 
                                 <label style="font-weight: normal">

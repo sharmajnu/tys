@@ -6,6 +6,7 @@ var UserSchema = new mongoose.Schema({
     name: String,
     createdDate: Date,
     lastLoggedInDate: Date,
+    tyscore: Number,
     roles: {
         public: Boolean,
         contributor: Boolean,

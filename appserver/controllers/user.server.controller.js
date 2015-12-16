@@ -35,6 +35,7 @@ var findOrCreate = function (profile, res, token) {
                 name: profile.name,
                 googleId: profile.sub,
                 email: profile.email,
+                tyscore: 0,
                 roles: {
                     public: true
                 },
@@ -62,7 +63,6 @@ var findUserAndSend = function (payload, res) {
 var get = function (req, res) {
     var payload = authHelper.getAuthPayload(req);
 
-    console.log(payload);
     if (payload && payload.roles && payload.roles.admin) {
         User.find({}).exec(function (err, users) {
             if (err) {
@@ -96,6 +96,21 @@ var getById = function (req, res) {
     }
 };
 
+var getMyDetails = function(req, res){
+    var payload = authHelper.getAuthPayload(req);
+    if(payload && payload.sub){
+        var userId = mongoose.Types.ObjectId(payload.sub);
+        User.findById(userId, {name: 1, email: 1, tyscore: 1, roles: 1 }, function (err, user) {
+            if (err) {
+                res.status(500).json(err);
+            } else {
+                res.status(200).json(user);
+            }
+        });
+
+    }
+};
+
 var changePerm = function (req, res) {
     var id = req.params.id;
     var role = req.body.role;
@@ -122,6 +137,7 @@ module.exports = {
     findUserAndSend: findUserAndSend,
     get: get,
     getById: getById,
-    changePerm: changePerm
+    changePerm: changePerm,
+    getMyDetails: getMyDetails
 };
 

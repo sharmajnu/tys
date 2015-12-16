@@ -69,3 +69,14 @@
 .score-card .col-lg-6{
   padding-right: 0px;
 }
+
+.jslider.sliderCSS div.jslider-pointer{
+  -webkit-box-shadow: 0px 0px 10px;
+  -moz-box-shadow: 0px 0px 10px;
+  box-shadow: 0px 0px 10px;
+
+  top: -8px !important;
+  height: 20px !important;
+  width: 15px !important;
+  border-radius: 5px !important;
+}

@@ -3,8 +3,6 @@ var Subject = require('../models/subject.server.model.js');
 
 var post = function (req, res) {
 
-    console.log('starting processing post request...');
-
     var subject = new Subject({
         name: req.body.name,
         code: req.body.code

@@ -19,7 +19,6 @@ var createSubject = function (name, callback) {
                 name: name
             });
             subject.save();
-            console.log('Saved subject id: ' + subject._id);
             id = subject._id;
         }
         callback(id);

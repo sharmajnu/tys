@@ -30,6 +30,8 @@
         };
 
         var controller = function ($scope) {
+
+
             $scope.$watch('quiz', function () {
                 if($scope.quiz && $scope.quiz.notes) {
                     $scope.quiz.instructions = (function () {
@@ -48,7 +50,7 @@
         };
 
         var scope = {
-            quiz: "="
+            quiz: "=",
         };
         return {
 

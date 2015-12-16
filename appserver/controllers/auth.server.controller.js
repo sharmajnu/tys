@@ -22,7 +22,7 @@ router.post('/google', function (req, res) {
         json: true,
         form: params
     }, function (err, response, token) {
-        console.log(token);
+
         var accessToken = token.access_token;
         var headers = {
             Authorization: 'Bearer ' + accessToken
